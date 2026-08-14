@@ -52,6 +52,3 @@ All options live in Forge's Settings tab under **Restore**:
 - **A specific control is restored wrongly or not at all** - controls are
   keyed by their nearest stable element id; if two controls share a wrapper id
   they collapse into one. Use the ignore list to exclude specific keys.
-
-## License
-MIT
