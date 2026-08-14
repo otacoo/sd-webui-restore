@@ -1,0 +1,68 @@
+#sd-webui-restore-status {
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+    z-index: 99999;
+    font-size: 11px;
+    font-family: monospace;
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(20, 20, 20, 0.5);
+    padding: 4px 10px;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    user-select: none;
+}
+
+#sd-webui-restore-status.show {
+    opacity: 1;
+}
+
+#sd-webui-restore-presets-block {
+    margin: 8px 0;
+}
+
+#sd-webui-restore-presets-block .sr-block-title {
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: var(--body-text-color, inherit);
+    font-family: var(--font, inherit);
+}
+
+#sd-webui-restore-presets-block .sr-block-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 6px;
+    align-items: center;
+}
+
+#sd-webui-restore-presets-block input,
+#sd-webui-restore-presets-block select {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--font, inherit);
+    font-size: var(--body-text-size, 14px);
+    color: var(--input-text-color, #ffffff);
+    background: var(--input-background-fill, #1f1f1f);
+    border: var(--input-border-width, 1px) solid var(--input-border-color, #424242);
+    border-radius: var(--radius-md, 8px);
+    padding: var(--input-padding, 6px 10px);
+}
+
+#sd-webui-restore-presets-block button {
+    font-family: var(--font, inherit);
+    font-size: var(--button-small-text-size, 14px);
+    font-weight: var(--button-small-text-weight, 600);
+    color: var(--button-secondary-text-color, #ffffff);
+    background: var(--button-secondary-background-fill, #424242);
+    border: var(--button-border-width, 1px) solid var(--button-secondary-border-color, #424242);
+    border-radius: var(--button-small-radius, 8px);
+    padding: var(--button-small-padding, 6px 12px);
+    cursor: pointer;
+    transition: var(--button-transition, background 0.15s);
+}
+
+#sd-webui-restore-presets-block button:hover {
+    background: var(--button-secondary-background-fill-hover, #525252);
+}
