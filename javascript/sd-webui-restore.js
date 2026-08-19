@@ -269,7 +269,7 @@
             entry.last = undefined;
         }
         bind(el);
-        if (state.session && state.session.controls) {
+        if (state.session && state.session.controls && !entry.applied && !entry.touched) {
             applyTo(key, state.session.controls[key]);
         }
     }
@@ -443,6 +443,7 @@
         try {
             writeValue(el, value);
             entry.last = readValue(el);
+            entry.applied = true;
             return true;
         } catch (e) {
             if (DEBUG) console.warn("sd-restore: failed to apply '" + key + "'", e);
@@ -534,33 +535,6 @@
         return failed.length === 0;
     }
 
-    function sameValue(el, stored) {
-        var t = controlType(el);
-        if (t === "checkbox") return !!readValue(el) === !!stored;
-        if (t === "radio") return readValue(el) === String(stored);
-        return readValue(el) === String(stored);
-    }
-
-    function reapplySweep(delay) {
-        setTimeout(function () {
-            if (!state.session || !state.session.controls) return;
-            if (state.restoring) return;
-            var controls = state.session.controls || {};
-            Object.keys(controls).forEach(function (key) {
-                var entry = state.registry.get(key);
-                if (!entry || entry.touched) return;
-                var el = resolveElement(key, entry.el);
-                if (!el) return;
-                try {
-                    if (!sameValue(el, controls[key])) {
-                        writeValue(el, controls[key]);
-                        entry.last = readValue(el);
-                    }
-                } catch (e) {}
-            });
-        }, delay);
-    }
-
     function boot() {
         if (state.booted || state.starting) return;
         state.starting = true;
@@ -581,9 +555,6 @@
             var count = state.session && state.session.controls ? Object.keys(state.session.controls).length : 0;
             if (DEBUG) console.info("sd-restore: booted, registry=" + state.registry.size + ", session controls=" + count);
             showStatus("restored: " + count + " controls");
-            reapplySweep(1500);
-            reapplySweep(4000);
-            reapplySweep(8000);
             window.addEventListener("beforeunload", flush);
             document.addEventListener("visibilitychange", function () {
                 if (document.visibilityState === "hidden") flush();
@@ -610,22 +581,6 @@
             }, 4000);
         } else {
             ready(function () { setTimeout(boot, 250); });
-        }
-        if (typeof onUiUpdate === "function") {
-            onUiUpdate(function () {
-                if (!state.session || !state.session.controls) return;
-                if (state.restoring) return;
-                var controls = state.session.controls || {};
-                state.registry.forEach(function (entry, key) {
-                    if (entry.touched) return;
-                    if (controls[key] === undefined) return;
-                    if (sameValue(entry.el, controls[key])) return;
-                    try {
-                        writeValue(entry.el, controls[key]);
-                        entry.last = readValue(entry.el);
-                    } catch (e) {}
-                });
-            });
         }
     }
 
